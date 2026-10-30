@@ -79,7 +79,11 @@ def main():
                     "shortName", "name", "units", "typeOfLevel", "level",
                     "stepType", "stepRange", "startStep", "endStep",
                     "dataDate", "dataTime", "validityDate", "validityTime",
-                    "forecastTime", "gridType", "numberOfPoints",
+                    "forecastTime", "gridType", "numberOfPoints", "paramId", "discipline",
+                    "parameterCategory", "parameterNumber", "tablesVersion",
+                    "localTablesVersion", "centre", "subCentre",
+                    "typeOfStatisticalProcessing", "stepUnits",
+                    "indicatorOfUnitOfTimeRange", "lengthOfTimeRange",
                 )
             }
             nearest = eccodes.codes_grib_find_nearest(gid, LAT, LON)
