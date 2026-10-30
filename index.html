@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="ALADIN meteogram pro Beňov – teplota, vítr, srážky, tlak a oblačnost.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <title>ALADIN – Meteogram Beňov</title>
+</head>
+<body>
+  <header class="top">
+    <div class="brand">Aladin - Meteogramy</div>
+    <div class="place">Meteogram: Beňov (okr. Přerov)</div>
+    <div class="meta" id="meta">Načítám předpověď…</div>
+    <div class="actions">
+      <button id="refresh" type="button">Aktualizovat</button>
+      <button id="install" type="button" hidden>Instalovat</button>
+    </div>
+  </header>
+  <main>
+    <div id="error" class="error" hidden></div>
+    <section class="plot-section" aria-label="Teplota"><div class="plot-heading"><span>Teplota</span><span class="legend"><i class="key temp"></i> Teplota [°C]</span></div><div class="chart-scroll"><svg id="temperature-chart" class="chart" viewBox="0 0 1000 250" role="img" aria-label="Graf teploty"></svg></div></section>
+    <section class="plot-section" aria-label="Vítr"><div class="plot-heading"><span>Vítr</span><span class="legend"><i class="key wind"></i> Rychlost [m/s] <i class="key gust"></i> Nárazy [m/s] <i class="key direction"></i> Směr</span></div><div class="chart-scroll"><svg id="wind-chart" class="chart" viewBox="0 0 1000 250" role="img" aria-label="Graf rychlosti, nárazů a směru větru"></svg></div></section>
+    <section class="plot-section" aria-label="Srážky a relativní vlhkost"><div class="plot-heading"><span>Srážky a relativní vlhkost</span><span class="legend"><i class="key rain"></i> Srážky [mm/h] <i class="key humidity"></i> Vlhkost [%]</span></div><div class="chart-scroll"><svg id="precip-chart" class="chart" viewBox="0 0 1000 250" role="img" aria-label="Graf srážek a relativní vlhkosti"></svg></div></section>
+    <section class="plot-section" aria-label="Tlak"><div class="plot-heading"><span>Tlak</span><span class="legend"><i class="key pressure"></i> Tlak [hPa]</span></div><div class="chart-scroll"><svg id="pressure-chart" class="chart" viewBox="0 0 1000 250" role="img" aria-label="Graf tlaku vzduchu"></svg></div></section>
+    <section class="plot-section" aria-label="Oblačnost"><div class="plot-heading"><span>Oblačnost</span><span class="legend"><i class="key cloud"></i> Celková [%] <i class="key cloudlow"></i> Nízká <i class="key cloudmid"></i> Střední <i class="key cloudhigh"></i> Vysoká</span></div><div class="chart-scroll"><svg id="cloud-chart" class="chart" viewBox="0 0 1000 250" role="img" aria-label="Graf celkové a vrstevnaté oblačnosti"></svg></div></section>
+  </main>
+  <footer>Předpověď: 1.–3. den ČHMÚ ALADIN, 4.–7. den ECMWF IFS HRES · data prostřednictvím Open-Meteo.<br>Modely se aktualizují přibližně každých 6 hodin.<br>Zdroj dat ČHMÚ, licence CC BY 4.0. Neoficiální nezávislé zobrazení.</footer>
+  <script src="app.js"></script>
+</body>
+</html>
