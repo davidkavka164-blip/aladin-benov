@@ -25,5 +25,5 @@ async function loadForecast(){const b=$('refresh');b.disabled=true;b.textContent
 $('refresh').addEventListener('click',loadForecast);
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;$('install').hidden=false;});
 $('install').addEventListener('click',async()=>{if(!deferredInstallPrompt)return;deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;$('install').hidden=true;});
-if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js?v=6',{updateViaCache:'none'}).then(reg=>reg.update()).catch(()=>{});
 loadForecast();setInterval(loadForecast,30*60*1000);
