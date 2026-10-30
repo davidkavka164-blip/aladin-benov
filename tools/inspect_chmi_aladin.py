@@ -66,6 +66,7 @@ def main():
         last = None
         nearest_first = None
         nearest_last = None
+        samples = []
         stream = tempfile.TemporaryFile()
         stream.write(payload)
         stream.seek(0)
@@ -88,6 +89,8 @@ def main():
             }
             nearest = eccodes.codes_grib_find_nearest(gid, LAT, LON)
             sample = nearest[0] if nearest else None
+            if field == 'SURFPREC_TOTAL':
+                samples.append((meta.get('endStep'), sample.value if sample else None))
             if first is None:
                 first, nearest_first = meta, sample
             last, nearest_last = meta, sample
@@ -98,6 +101,7 @@ def main():
         print(f"FIRST_NEAREST {nearest_first}")
         print(f"LAST {last}")
         print(f"LAST_NEAREST {nearest_last}")
+        if field == 'SURFPREC_TOTAL': print(f"PRECIP_SAMPLES {samples[:12]}")
     print("\nInspection complete.")
 
 if __name__ == "__main__":
