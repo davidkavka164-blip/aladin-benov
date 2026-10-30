@@ -1,27 +1,48 @@
-import os
-import tempfile
+import requests
 import eccodes
-from ecmwf.opendata import Client
+import os
 
-DATE = int(os.environ.get("ECMWF_DATE", "20261030"))
-TIME = int(os.environ.get("ECMWF_TIME", "12"))
+DATE = "20261030"
+TIME = "12"
+STEP = 96
 LAT, LON = 49.417362, 17.501343
-PARAMS = ["2t", "2r", "msl", "tp", "10u", "10v", "10fg", "tcc", "lcc", "mcc", "hcc"]
-
-def get(gid, key):
-    try:
-        return eccodes.codes_get(gid, key)
-    except Exception:
-        return None
+ROOTS = [
+    "https://data.ecmwf.int/forecasts",
+    "https://ecmwf-forecasts.s3.eu-central-1.amazonaws.com",
+]
+PATHS = [
+    f"{DATE}/{TIME}z/ifs/0p1/oper/{DATE}{TIME}0000-{STEP}h-oper-fc-sfc.grib2",
+    f"{DATE}/{TIME}z/ifs/0p25/oper/{DATE}{TIME}0000-{STEP}h-oper-fc.grib2",
+]
+session = requests.Session()
+session.headers["User-Agent"] = "ALADIN-Meteogram-Benov/1.0"
 
 def main():
+    selected = None
+    for root in ROOTS:
+        for path in PATHS:
+            url = f"{root}/{path}"
+            try:
+                r = session.get(url, stream=True, timeout=90)
+                print(f"CHECK {r.status_code} {r.headers.get('Content-Length')} {url}")
+                if r.status_code == 200:
+                    selected = (url, r)
+                    break
+                r.close()
+            except Exception as exc:
+                print(f"CHECK ERROR {url}: {exc}")
+        if selected:
+            break
+    if not selected:
+        raise RuntimeError("No direct ECMWF GRIB file found at tested URLs")
+    url, response = selected
     target = "ecmwf_test.grib2"
-    client = Client(source="aws", model="ifs", resol="0p1")
-    result = client.retrieve(
-        date=DATE, time=TIME, stream="oper", type="fc",
-        step=96, param=PARAMS, levtype="sfc", target=target
-    )
-    print(f"Retrieved ECMWF run {result.datetime}; file {target}; bytes={os.path.getsize(target)}")
+    with open(target, "wb") as out:
+        for chunk in response.iter_content(1024 * 1024):
+            if chunk:
+                out.write(chunk)
+    response.close()
+    print(f"Downloaded {url}; bytes={os.path.getsize(target)}")
     count = 0
     with open(target, "rb") as stream:
         while True:
@@ -30,15 +51,15 @@ def main():
                 break
             count += 1
             nearest = eccodes.codes_grib_find_nearest(gid, LAT, LON)
+            def get(k):
+                try: return eccodes.codes_get(gid, k)
+                except Exception: return None
             print({
-                "shortName": get(gid, "shortName"),
-                "name": get(gid, "name"),
-                "units": get(gid, "units"),
-                "step": get(gid, "step"),
-                "validityDate": get(gid, "validityDate"),
-                "validityTime": get(gid, "validityTime"),
-                "typeOfLevel": get(gid, "typeOfLevel"),
-                "level": get(gid, "level"),
+                "shortName": get("shortName"), "name": get("name"),
+                "units": get("units"), "step": get("step"),
+                "validityDate": get("validityDate"),
+                "validityTime": get("validityTime"),
+                "typeOfLevel": get("typeOfLevel"), "level": get("level"),
                 "sample": nearest[0].value if nearest else None,
             })
             eccodes.codes_release(gid)
