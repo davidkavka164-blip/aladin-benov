@@ -1,5 +1,5 @@
 import bz2
-import io
+import tempfile
 import re
 import sys
 import requests
@@ -66,7 +66,9 @@ def main():
         last = None
         nearest_first = None
         nearest_last = None
-        stream = io.BytesIO(payload)
+        stream = tempfile.TemporaryFile()
+        stream.write(payload)
+        stream.seek(0)
         while True:
             gid = eccodes.codes_grib_new_from_file(stream)
             if gid is None:
@@ -86,6 +88,7 @@ def main():
                 first, nearest_first = meta, sample
             last, nearest_last = meta, sample
             eccodes.codes_release(gid)
+        stream.close()
         print(f"MESSAGES {count}")
         print(f"FIRST {first}")
         print(f"FIRST_NEAREST {nearest_first}")
