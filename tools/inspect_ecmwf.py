@@ -5,7 +5,7 @@ from ecmwf.opendata import Client
 DATE = int(os.environ.get("ECMWF_DATE", "20261030"))
 TIME = int(os.environ.get("ECMWF_TIME", "12"))
 LAT, LON = 49.417362, 17.501343
-PARAMS = ["2t", "2r", "msl", "tp", "10u", "10v", "10fg3", "tcc", "lcc", "mcc", "hcc"]
+PARAMS = ["2t", "2d", "msl", "tp", "10u", "10v", "10fg3", "tcc", "lcc", "mcc", "hcc"]
 
 def get(gid, key):
     try:
@@ -15,10 +15,10 @@ def get(gid, key):
 
 def main():
     target = "ecmwf_test.grib2"
-    client = Client(source="aws", model="ifs", resol="0p25")
+    client = Client(source="ecmwf", model="ifs", resol="0p25")
     result = client.retrieve(
         date=DATE, time=TIME, stream="oper", type="fc",
-        step=96, param=PARAMS, levtype="sfc", target=target
+        step=[72, 75, 78, 81, 84], param=PARAMS, levtype="sfc", target=target
     )
     print(f"Retrieved ECMWF run {result.datetime}; bytes={os.path.getsize(target)}")
     count = 0
