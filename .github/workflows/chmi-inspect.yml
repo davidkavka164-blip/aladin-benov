@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/chmi-inspect.yml"
+      - "tools/inspect_chmi_aladin.py"
   workflow_dispatch:
 
 permissions:
