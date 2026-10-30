@@ -57,7 +57,7 @@ def finite(value):
         value = float(value)
     except (TypeError, ValueError):
         return None
-    if not math.isfinite(value) or abs(value) >= 9998:
+    if not math.isfinite(value) or value == 9999.0 or abs(value) >= 1e20:
         return None
     return value
 
