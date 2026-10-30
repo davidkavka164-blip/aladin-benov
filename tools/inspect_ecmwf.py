@@ -5,7 +5,7 @@ from ecmwf.opendata import Client
 DATE = int(os.environ.get("ECMWF_DATE", "20261030"))
 TIME = int(os.environ.get("ECMWF_TIME", "12"))
 LAT, LON = 49.417362, 17.501343
-PARAMS = ["2t", "2d", "msl", "tp", "10u", "10v", "10fg3", "tcc", "lcc", "mcc", "hcc"]
+PARAMS = ["2t", "2d", "msl", "tp", "10u", "10v", "10fg", "tcc", "lcc", "mcc", "hcc"]
 
 def get(gid, key):
     try:
