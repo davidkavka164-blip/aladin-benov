@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/chmi-inspect.yml"
       - "tools/inspect_chmi_aladin.py"
+      - "tools/inspect_ecmwf.py"
   workflow_dispatch:
 
 permissions:
@@ -23,6 +24,8 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install GRIB decoder
-        run: python -m pip install --upgrade pip requests eccodes
+        run: python -m pip install --upgrade pip requests eccodes ecmwf-opendata
       - name: Inspect current CHMI ALADIN run
         run: python tools/inspect_chmi_aladin.py
+      - name: Inspect direct ECMWF open data
+        run: python tools/inspect_ecmwf.py
