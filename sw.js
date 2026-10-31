@@ -1,5 +1,5 @@
 'use strict';
-const CACHE='aladin-benov-v11';
+const CACHE='aladin-benov-v12';
 const APP_FILES=['./','./index.html','./style.css','./app.js','./manifest.webmanifest','./icon.svg','./data/forecast.json'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{const cache=await caches.open(CACHE);await cache.addAll(APP_FILES);await self.skipWaiting();})()));
 self.addEventListener('activate',event=>event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(key=>key.startsWith('aladin-benov-')&&key!==CACHE).map(key=>caches.delete(key)));await self.clients.claim();})()));
