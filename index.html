@@ -7,7 +7,7 @@
   <meta name="description" content="ALADIN meteogram pro Beňov – teplota, vítr, srážky, tlak a oblačnost.">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=7">
+  <link rel="stylesheet" href="style.css?v=8">
   <title>ALADIN – Meteogram Beňov</title>
 </head>
 <body>
@@ -22,13 +22,15 @@
   </header>
   <main>
     <div id="error" class="error" hidden></div>
+    <div class="sheet-scroll"><div class="meteogram-sheet">
     <section class="plot-section" aria-label="Teplota"><div class="plot-heading"><span>Teplota</span><span class="legend"><i class="key temp"></i> Teplota [°C]</span></div><div class="chart-scroll"><svg id="temperature-chart" class="chart" viewBox="0 0 1000 250" role="img" aria-label="Graf teploty"></svg></div></section>
     <section class="plot-section" aria-label="Vítr"><div class="plot-heading"><span>Vítr</span><span class="legend"><i class="key wind"></i> Rychlost [m/s] <i class="key gust"></i> Nárazy [m/s] <i class="key direction"></i> Směr</span></div><div class="chart-scroll"><svg id="wind-chart" class="chart" viewBox="0 0 1000 250" role="img" aria-label="Graf rychlosti, nárazů a směru větru"></svg></div></section>
     <section class="plot-section" aria-label="Srážky a relativní vlhkost"><div class="plot-heading"><span>Srážky a relativní vlhkost</span><span class="legend"><i class="key rain"></i> Srážky [mm/h] <i class="key humidity"></i> Vlhkost [%]</span></div><div class="chart-scroll"><svg id="precip-chart" class="chart" viewBox="0 0 1000 250" role="img" aria-label="Graf srážek a relativní vlhkosti"></svg></div></section>
     <section class="plot-section" aria-label="Tlak"><div class="plot-heading"><span>Tlak</span><span class="legend"><i class="key pressure"></i> Tlak [hPa]</span></div><div class="chart-scroll"><svg id="pressure-chart" class="chart" viewBox="0 0 1000 250" role="img" aria-label="Graf tlaku vzduchu"></svg></div></section>
     <section class="plot-section" aria-label="Oblačnost"><div class="plot-heading"><span>Oblačnost</span><span class="legend"><i class="key cloud"></i> Celková [%] <i class="key cloudlow"></i> Nízká <i class="key cloudmid"></i> Střední <i class="key cloudhigh"></i> Vysoká</span></div><div class="chart-scroll"><svg id="cloud-chart" class="chart" viewBox="0 0 1000 250" role="img" aria-label="Graf celkové a vrstevnaté oblačnosti"></svg></div></section>
+    </div></div>
   </main>
   <footer>Předpověď: 1.–3. den ČHMÚ ALADIN 1 km, 4.–7. den ECMWF IFS HRES 0,25°.<br>Data se stahují přímo z otevřených dat ČHMÚ a ECMWF a zpracovávají se pro Beňov.<br>Licence: ČHMÚ CC BY 4.0 · ECMWF CC BY 4.0. Neoficiální nezávislé zobrazení.</footer>
-  <script src="app.js?v=8"></script>
+  <script src="app.js?v=9"></script>
 </body>
 </html>
