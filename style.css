@@ -9,7 +9,9 @@ body { max-width:1200px; margin:0 auto; }
 .actions { display:flex; gap:8px; margin-top:8px; }
 button { font-size:14px; padding:6px 12px; border:1px solid #999; background:#f7f7f7; color:#222; border-radius:2px; }
 button:active { background:#e6e6e6; }
-main { padding:0 8px; }
+main { padding:0; }
+.sheet-scroll { width:100%; overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain; }
+.meteogram-sheet { width:100%; min-width:1000px; padding:0 8px; }
 .plot-section { border-bottom:1px solid #aaa; padding:8px 0 5px; }
 .plot-heading { display:flex; align-items:baseline; justify-content:space-between; gap:8px; padding:0 6px 4px; font-size:15px; font-weight:bold; }
 .legend { display:flex; align-items:center; flex-wrap:wrap; gap:5px 10px; font-size:11px; font-weight:normal; color:#333; }
@@ -17,8 +19,8 @@ main { padding:0 8px; }
 .key.temp { background:#ed1717; } .key.cloud { height:9px; background:#9ca3aa; opacity:.8; } .key.cloudlow { background:#555b62; } .key.cloudmid { background:#557dba; } .key.cloudhigh { background:#d18a36; }
 .key.wind { background:#c21882; } .key.gust { background:#2672b8; } .key.direction { background:#e21b1b; }
 .key.rain { height:9px; background:#2879d0; } .key.humidity { background:#173d70; } .key.pressure { background:#e68120; }
-.chart-scroll { width:100%; overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; }
-.chart { display:block; width:100%; min-width:760px; height:auto; background:#fff; }
+.chart-scroll { width:100%; overflow:visible; }
+.chart { display:block; width:100%; min-width:0; height:auto; background:#fff; }
 .error { margin:10px 8px; padding:8px 10px; border:1px solid #c77; background:#fff3f3; color:#8a1111; font-size:14px; }
 footer { padding:10px 14px 18px; font-size:11px; line-height:1.5; color:#555; }
-@media (max-width:520px) { .top{padding:10px 10px 7px}.place{font-size:17px}.plot-heading{display:block;line-height:1.6}.legend{margin-top:1px}main{padding:0 4px} }
+@media (max-width:520px) { .top{padding:10px 10px 7px}.place{font-size:17px}.plot-heading{display:block;line-height:1.6}.legend{margin-top:1px}main{padding:0}.meteogram-sheet{padding:0 4px} }
