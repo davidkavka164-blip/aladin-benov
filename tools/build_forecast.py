@@ -174,13 +174,15 @@ def relative_humidity_from_dewpoint(temp_k, dewpoint_k):
     return max(0.0, min(100.0, 100.0 * math.exp(exponent)))
 
 
-def load_ecmwf(run):
+def load_ecmwf(run, offset=0):
     run_date = int(run[:8])
     run_time = int(run[8:])
+    requested_steps = [step + offset for step in ECMWF_STEPS]
     target = "ecmwf_forecast.grib2"
     print(
         f"Načítám ECMWF IFS HRES 0,25°, běh {run} UTC, "
-        f"kroky {ECMWF_STEPS[0]}–{ECMWF_STEPS[-1]} h"
+        f"kroky {requested_steps[0]}–{requested_steps[-1]} h "
+        f"(posun vůči ALADINu {offset} h)"
     )
     client = Client(source="ecmwf", model="ifs", resol="0p25")
     result = client.retrieve(
@@ -188,7 +190,7 @@ def load_ecmwf(run):
         time=run_time,
         stream="oper",
         type="fc",
-        step=ECMWF_STEPS,
+        step=requested_steps,
         param=ECMWF_PARAMS,
         levtype="sfc",
         target=target,
@@ -209,7 +211,7 @@ def load_ecmwf(run):
                 short_name = grib_get(gid, "shortName")
                 step = grib_get(gid, "step")
                 if short_name in raw and step is not None:
-                    raw[short_name][int(step)] = nearest_value(gid)
+                    raw[short_name][int(step) - offset] = nearest_value(gid)
             finally:
                 eccodes.codes_release(gid)
 
@@ -341,7 +343,11 @@ def main():
         try:
             base = datetime.strptime(run, "%Y%m%d%H").replace(tzinfo=timezone.utc)
             chmi = load_chmi(run, files)
-            ecmwf = load_ecmwf(run)
+            # ECMWF HRES long-range steps are taken from the latest 00/12 UTC cycle.
+            # For an ALADIN 06/18 UTC run, align the ECMWF forecast by a 6-hour offset.
+            ecmwf_base = base.replace(hour=(base.hour // 12) * 12)
+            ecmwf_offset = int((base - ecmwf_base).total_seconds() // 3600)
+            ecmwf = load_ecmwf(ecmwf_base.strftime("%Y%m%d%H"), ecmwf_offset)
             hourly = merge_forecasts(base, chmi, ecmwf)
             os.makedirs(os.path.dirname(OUTPUT), exist_ok=True)
             payload = {
