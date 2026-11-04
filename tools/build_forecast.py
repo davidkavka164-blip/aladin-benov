@@ -69,7 +69,7 @@ def nearest_value(gid):
 
 def find_chmi_runs():
     runs = {}
-    for cycle in ("00", "12"):
+    for cycle in ("00", "06", "12", "18"):
         directory = f"{CHMI_BASE}/{cycle}/"
         response = SESSION.get(directory, timeout=60)
         response.raise_for_status()
@@ -92,7 +92,7 @@ def find_chmi_runs():
     ]
     complete.sort(key=lambda item: item[0], reverse=True)
     if not complete:
-        raise RuntimeError("ČHMÚ: nebyl nalezen úplný běh ALADIN 1 km (00/12 UTC).")
+        raise RuntimeError("ČHMÚ: nebyl nalezen úplný běh ALADIN 1 km (00/06/12/18 UTC).")
     return complete
 
 
